@@ -1,6 +1,6 @@
-import type { AVAILABLE_RESOLUTIONS_ENUM } from "../constants/available-resolutions.const";
+import { AVAILABLE_RESOLUTIONS_ENUM } from "@/constants/available-resolutions.const";
 
-export interface VideoType {
+export interface VideoViewModel {
   id: number;
   title: string;
   author: string;
@@ -10,11 +10,3 @@ export interface VideoType {
   publicationDate: string;
   availableResolutions: AVAILABLE_RESOLUTIONS_ENUM[];
 }
-
-export type DbType = {
-  videos: VideoType[];
-};
-
-export const db: DbType = {
-  videos: [],
-};
