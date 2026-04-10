@@ -200,4 +200,31 @@ describe("test put methods /videos router", () => {
     expect(getEntityResult.body.createdAt).toMatch(isoRegex);
     expect(getEntityResult.body.publicationDate).toMatch(isoRegex);
   });
+
+  // - Валидация типов полей при обновлении
+  it("Should validate field types: title as null, canBeDownloaded as string", async () => {
+    const createData = GetCreateVideoInputModel({});
+    const { createdEntity } = await createEntity({ data: createData });
+
+    const data = GetUpdateVideoInputModel({});
+    (data as any).title = null;
+    (data as any).canBeDownloaded = "string";
+
+    const { result } = await updateEntity({
+      id: createdEntity.id,
+      data: data as any,
+      expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
+    });
+
+    expect(result.body.errorsMessages).toStrictEqual([
+      {
+        field: "title",
+        message: expect.any(String),
+      },
+      {
+        field: "canBeDownloaded",
+        message: expect.any(String),
+      },
+    ]);
+  });
 });
