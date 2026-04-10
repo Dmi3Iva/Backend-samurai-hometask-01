@@ -3,9 +3,9 @@ import { getTestingRouter } from "./features/testing/testing.router";
 import { ROUTERS } from "./constants/index";
 import { getVideoRouter } from "./features/videos/videos.router";
 import { db } from "./db/db";
-import swaggerJsdoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
-import type { Express } from "express";
+// import swaggerJsdoc from "swagger-jsdoc";
+// import swaggerUi from "swagger-ui-express";
+// import type { Express } from "express";
 
 const swaggerOptions = {
   definition: {
@@ -18,11 +18,11 @@ const swaggerOptions = {
   apis: ["./src/**/*.swagger.yml"],
 };
 
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
+// const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
-export const setupSwagger = (app: Express) => {
-  app.use("/hometask_01/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-};
+// export const setupSwagger = (app: Express) => {
+//   app.use("/hometask_01/api", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// };
 
 export const app = express();
 
@@ -35,4 +35,4 @@ app.get("/", (req, res) => {
   return res.send("Hello, samurai");
 });
 
-setupSwagger(app);
+// setupSwagger(app);
