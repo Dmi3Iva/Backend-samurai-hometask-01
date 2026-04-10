@@ -7,7 +7,7 @@ import { GetCreateVideoInputModel } from "./utils/videos.mock.creator";
 
 const getRequest = () => request(app);
 
-const testingBasePath = ROUTERS.TESTINGS;
+const testingBasePath = ROUTERS.TESTING;
 
 const { createEntity, getEntities, getEntity } = videosTestManager;
 

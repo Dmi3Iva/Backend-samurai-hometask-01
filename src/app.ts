@@ -29,7 +29,7 @@ export const app = express();
 app.use(express.json());
 
 app.use(ROUTERS.VIDEOS, getVideoRouter(db));
-app.use(ROUTERS.TESTINGS, getTestingRouter(db));
+app.use(ROUTERS.TESTING, getTestingRouter(db));
 
 app.get("/", (req, res) => {
   return res.send("Hello, samurai");
