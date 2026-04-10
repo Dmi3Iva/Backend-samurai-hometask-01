@@ -4,12 +4,12 @@ import { app } from "../src/app";
 import { videosTestManager } from "./utils/videos-test-manager";
 import { AVAILABLE_RESOLUTIONS_ENUM } from "../src/constants/available-resolutions.const";
 import type { CreateVideoInputModel } from "../src/features/videos/models";
-import { HTTP_CODES } from "../src/constants";
+import { HTTP_CODES, ROUTERS } from "../src/constants";
 
 const getRequest = () => request(app);
 
-const basePath = "/hometask_01/api/videos";
-const testingBasePath = "/hometask_01/api/testing";
+const basePath = ROUTERS.VIDEOS;
+const testingBasePath = ROUTERS.TESTING;
 
 const { createEntity, getEntities, getEntity } = videosTestManager;
 

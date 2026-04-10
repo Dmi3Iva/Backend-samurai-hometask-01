@@ -7,11 +7,11 @@ import {
 } from "../../src/features/videos/models";
 import { expect } from "vitest";
 import type { Response } from "supertest";
-import { HTTP_CODES } from "../../src/constants";
+import { HTTP_CODES, ROUTERS } from "../../src/constants";
 import type { StatusCodeType } from "../../src/types";
 
 const getRequest = () => request(app);
-const basePath = "/hometask_01/api/videos";
+const basePath = ROUTERS.VIDEOS;
 
 export const videosTestManager = {
   async createEntity({
