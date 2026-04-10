@@ -1,4 +1,4 @@
 export enum ROUTERS {
-  VIDEOS = "/api/videos",
-  TESTING = "/api/testing",
+  VIDEOS = "/hometask_01/api/videos",
+  TESTING = "/hometask_01/api/testing",
 }
