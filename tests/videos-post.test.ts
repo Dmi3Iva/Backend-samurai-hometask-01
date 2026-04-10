@@ -15,7 +15,7 @@ const { createEntity, getEntities, getEntity } = videosTestManager;
 
 describe("test post methods /videos router", () => {
   beforeEach(() => {
-    return getRequest().post(`${testingBasePath}/all-data`).send({});
+    return getRequest().delete(`${testingBasePath}/all-data`).send({});
   });
 
   it("should create video with correct input", async () => {
@@ -44,7 +44,7 @@ describe("test post methods /videos router", () => {
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toHaveLength(3);
+    expect(result.body.errorsMessages).toHaveLength(3);
   });
 
   it("should not create video with empty availableResolutions", async () => {
@@ -60,35 +60,33 @@ describe("test post methods /videos router", () => {
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toEqual([
+    expect(result.body.errorsMessages).toEqual([
       {
         field: "availableResolutions",
         message: expect.any(String),
       },
     ]);
-    expect(result.body).toHaveLength(1);
+    expect(result.body.errorsMessages).toHaveLength(1);
   });
 
   it("should not create video with incorrect availableResolutions", async () => {
-    const title = "video without resolutions";
-    const author = "ai agent";
-    const data: CreateVideoInputModel = {
-      title,
-      author,
+    const data = {
+      title: "video with bad resolutions",
+      author: "ai agent",
       availableResolutions: ["hren"],
     };
-    const { result } = await createEntity({
-      data,
-      expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
-    });
+    const result = await getRequest()
+      .post(basePath)
+      .send(data)
+      .expect(HTTP_CODES.HTTP_STATUS_BAD_REQUEST);
 
-    expect(result.body).toEqual([
+    expect(result.body.errorsMessages).toEqual([
       {
         field: "availableResolutions",
         message: expect.any(String),
       },
     ]);
-    expect(result.body).toHaveLength(1);
+    expect(result.body.errorsMessages).toHaveLength(1);
   });
 
   it("should not create video WITHOUT TITLE", async () => {
@@ -102,14 +100,12 @@ describe("test post methods /videos router", () => {
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toEqual([
+    expect(result.body.errorsMessages).toEqual([
       {
         field: "title",
         message: expect.any(String),
       },
     ]);
-
-    expect(result.body).toHaveLength(4);
   });
 
   it("should not create video WITHOUT AUTHOR", async () => {
@@ -123,7 +119,7 @@ describe("test post methods /videos router", () => {
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toEqual([
+    expect(result.body.errorsMessages).toEqual([
       {
         field: "author",
         message: expect.any(String),
@@ -143,9 +139,9 @@ describe("test post methods /videos router", () => {
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toEqual([
+    expect(result.body.errorsMessages).toEqual([
       {
-        field: "author",
+        field: "availableResolutions",
         message: expect.any(String),
       },
     ]);
@@ -154,19 +150,19 @@ describe("test post methods /videos router", () => {
   it("should create video with edge values", async () => {
     const author = "r".repeat(20);
     const title = "t".repeat(40);
-    const data: Partial<CreateVideoInputModel> = {
+    const data: CreateVideoInputModel = {
       author,
       title,
+      availableResolutions: [AVAILABLE_RESOLUTIONS_ENUM.P144],
     };
     const { createdEntity } = await createEntity({
-      data: data as CreateVideoInputModel,
-      expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
+      data,
     });
 
     const { result: receivedEntity } = await getEntity({
       data: createdEntity.id,
     });
 
-    expect(receivedEntity.body).toEqual(createEntity);
+    expect(receivedEntity.body).toEqual(createdEntity);
   });
 });

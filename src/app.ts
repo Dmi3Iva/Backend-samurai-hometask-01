@@ -29,6 +29,6 @@ export const app = express();
 app.use(express.json());
 
 app.use(ROUTERS.VIDEOS, getVideoRouter(db));
-app.use(ROUTERS.TESTINGS, getTestingRouter());
+app.use(ROUTERS.TESTINGS, getTestingRouter(db));
 
 setupSwagger(app);

@@ -1,4 +1,4 @@
-import { AVAILABLE_RESOLUTIONS_ENUM } from "@/constants";
+import AVAILABLE_RESOLUTIONS_ENUM from "../../../constants";
 
 export interface UpdateViewInputModel {
   /**

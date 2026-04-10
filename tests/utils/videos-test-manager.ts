@@ -28,7 +28,7 @@ export const videosTestManager = {
     const createdEntity = result.body;
 
     if (expectedStatus === HTTP_CODES.HTTP_STATUS_CREATED) {
-      expect(createdEntity).toBe({
+      expect(createdEntity).toEqual({
         id: expect.any(Number),
         title: data.title,
         author: data.author,
@@ -51,11 +51,16 @@ export const videosTestManager = {
     expectedStatus?: StatusCodeType;
   }): Promise<{
     result: Response;
+    resultEntities: VideoViewModel[];
   }> {
     const result = await getRequest().get(basePath);
+
     expect(result.status).toBe(expectedStatus);
-    return { result };
+    const resultEntities = result.body;
+
+    return { result, resultEntities };
   },
+
   async getEntity({
     data,
     expectedStatus = HTTP_CODES.HTTP_STATUS_OK,
@@ -63,13 +68,27 @@ export const videosTestManager = {
     data: number;
     expectedStatus?: StatusCodeType;
   }) {
-    const result = await getRequest().get(basePath);
+    const result = await getRequest().get(`${basePath}/${data}`);
     expect(result.status).toBe(expectedStatus);
     return { result };
   },
-  async updateEntity({}) {
-    throw new Error("not implemented");
+
+  async updateEntity({
+    id,
+    data,
+    expectedStatus = HTTP_CODES.HTTP_STATUS_NO_CONTENT,
+  }: {
+    id: number;
+    data: UpdateViewInputModel;
+    expectedStatus: StatusCodeType;
+  }): Promise<{
+    result: Response;
+  }> {
+    const result = await getRequest().put(`${basePath}/${id}`).send(data);
+    expect(result.status).toBe(expectedStatus);
+    return { result };
   },
+
   async deleteEntity({
     id,
     expectedStatus = HTTP_CODES.HTTP_STATUS_NO_CONTENT,
@@ -79,20 +98,8 @@ export const videosTestManager = {
   }): Promise<{
     result: Response;
   }> {
-    throw new Error("not implemented");
     const result = await getRequest().delete(`${basePath}/${id}`);
     expect(result.status).toBe(expectedStatus);
     return { result };
-  },
-  async updateEntity({
-    id,
-    data,
-    expectedStatus = HTTP_CODES.HTTP_STATUS_NO_CONTENT,
-  }: {
-    id: number;
-    data: UpdateViewInputModel;
-    expectedStatus: StatusCodeType;
-  }) {
-    throw new Error("not implemented");
   },
 };

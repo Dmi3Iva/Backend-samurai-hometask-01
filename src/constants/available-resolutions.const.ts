@@ -1,4 +1,4 @@
-export const enum AVAILABLE_RESOLUTIONS_ENUM {
+export enum AVAILABLE_RESOLUTIONS_ENUM {
   P144 = "P144",
   P240 = "P240",
   P360 = "P360",

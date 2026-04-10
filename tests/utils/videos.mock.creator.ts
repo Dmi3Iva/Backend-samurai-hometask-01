@@ -18,7 +18,7 @@ export const GetCreateVideoInputModel = ({
 
 export const GetUpdateVideoInputModel = ({
   title = "default updated title",
-  author = "default updated author",
+  author = "defaultUpdatedAuthor",
   availableResolutions = [AVAILABLE_RESOLUTIONS_ENUM.P240],
   canBeDownloaded = true,
   minAgeRestriction = 1,

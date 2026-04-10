@@ -7,6 +7,7 @@ import {
   GetCreateVideoInputModel,
   GetUpdateVideoInputModel,
 } from "./utils/videos.mock.creator";
+import { isoRegex } from "./constants";
 
 const getRequest = () => request(app);
 
@@ -16,166 +17,157 @@ const testingBasePath = "/hometask_01/api/testing";
 const { createEntity, getEntities, getEntity, updateEntity } =
   videosTestManager;
 
-// TODO:: finish tests
 describe("test put methods /videos router", () => {
   beforeEach(() => {
-    return getRequest().post(`${testingBasePath}/all-data`).send({});
+    return getRequest().delete(`${testingBasePath}/all-data`).send({});
   });
 
   // - Обновление несуществующего → 404
   it("Should not update not existed entity", async () => {
     const data = GetUpdateVideoInputModel({});
     await updateEntity({
-      data,
+      data: data as any,
       id: 1,
       expectedStatus: HTTP_CODES.HTTP_STATUS_NOT_FOUND,
     });
   });
+
   // - Некорректный формат id
   it("Should validate parameter", async () => {
     const data = GetUpdateVideoInputModel({});
-    await updateEntity({
-      data,
-      id: "strin",
-      expectedStatus: HTTP_CODES.HTTP_STATUS_NOT_FOUND,
-    });
+    await getRequest()
+      .put(`${basePath}/strin`)
+      .send(data)
+      .expect(HTTP_CODES.HTTP_STATUS_NOT_FOUND);
   });
+
   // - Валидация полей при обновлении (аналогично POST)
   it("Expect error validation author field", async () => {
     const createData = GetCreateVideoInputModel({});
     const { createdEntity } = await createEntity({ data: createData });
 
     const data = GetUpdateVideoInputModel({});
-    delete data.author;
+    delete (data as any).author;
 
-    const result = await updateEntity({
+    const { result } = await updateEntity({
       id: createdEntity.id,
-      data,
+      data: data as any,
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toBe({
-      errorsMessages: [
-        {
-          field: "author",
-          message: expect.any(String),
-        },
-      ],
-    });
+    expect(result.body.errorsMessages).toStrictEqual([
+      {
+        field: "author",
+        message: expect.any(String),
+      },
+    ]);
   });
+
   it("Expect error validation title field", async () => {
     const createData = GetCreateVideoInputModel({});
     const { createdEntity } = await createEntity({ data: createData });
 
     const data = GetUpdateVideoInputModel({});
-    delete data.title;
+    delete (data as any).title;
 
-    const result = await updateEntity({
+    const { result } = await updateEntity({
       id: createdEntity.id,
-      data,
+      data: data as any,
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toBe({
-      errorsMessages: [
-        {
-          field: "title",
-          message: expect.any(String),
-        },
-      ],
-    });
+    expect(result.body.errorsMessages).toStrictEqual([
+      {
+        field: "title",
+        message: expect.any(String),
+      },
+    ]);
   });
-  // TODO:: check if availableResolutions length === 0 it's error
+
   it("Expect error validation availableResolutions field", async () => {
     const createData = GetCreateVideoInputModel({});
     const { createdEntity } = await createEntity({ data: createData });
 
     const data = GetUpdateVideoInputModel({});
-    delete data.availableResolutions;
+    delete (data as any).availableResolutions;
 
-    const result = await updateEntity({
+    const { result } = await updateEntity({
       id: createdEntity.id,
-      data,
+      data: data as any,
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toBe({
-      errorsMessages: [
-        {
-          field: "availableResolutions",
-          message: expect.any(String),
-        },
-      ],
-    });
+    expect(result.body.errorsMessages).toStrictEqual([
+      {
+        field: "availableResolutions",
+        message: expect.any(String),
+      },
+    ]);
   });
+
   it("Expect error validation canBeDownloaded field", async () => {
     const createData = GetCreateVideoInputModel({});
     const { createdEntity } = await createEntity({ data: createData });
 
     const data = GetUpdateVideoInputModel({});
-    delete data.canBeDownloaded;
+    delete (data as any).canBeDownloaded;
 
-    const result = await updateEntity({
+    const { result } = await updateEntity({
       id: createdEntity.id,
-      data,
+      data: data as any,
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toBe({
-      errorsMessages: [
-        {
-          field: "canBeDownloaded",
-          message: expect.any(String),
-        },
-      ],
-    });
+    expect(result.body.errorsMessages).toStrictEqual([
+      {
+        field: "canBeDownloaded",
+        message: expect.any(String),
+      },
+    ]);
   });
-  // TODO:: check that in update it possble to set value as 1 to 18 not null
+
   it("Expect error validation minAgeRestriction field", async () => {
     const createData = GetCreateVideoInputModel({});
     const { createdEntity } = await createEntity({ data: createData });
 
     const data = GetUpdateVideoInputModel({});
-    delete data.minAgeRestriction;
+    delete (data as any).minAgeRestriction;
 
-    const result = await updateEntity({
+    const { result } = await updateEntity({
       id: createdEntity.id,
-      data,
+      data: data as any,
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toBe({
-      errorsMessages: [
-        {
-          field: "minAgeRestriction",
-          message: expect.any(String),
-        },
-      ],
-    });
+    expect(result.body.errorsMessages).toStrictEqual([
+      {
+        field: "minAgeRestriction",
+        message: expect.any(String),
+      },
+    ]);
   });
-  // TODO:: check that publicationDate special format
+
   it("Expect error validation publicationDate field", async () => {
     const createData = GetCreateVideoInputModel({});
     const { createdEntity } = await createEntity({ data: createData });
 
     const data = GetUpdateVideoInputModel({});
-    delete data.publicationDate;
+    delete (data as any).publicationDate;
 
-    const result = await updateEntity({
+    const { result } = await updateEntity({
       id: createdEntity.id,
-      data,
+      data: data as any,
       expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
     });
 
-    expect(result.body).toBe({
-      errorsMessages: [
-        {
-          field: "publicationDate",
-          message: expect.any(String),
-        },
-      ],
-    });
+    expect(result.body.errorsMessages).toStrictEqual([
+      {
+        field: "publicationDate",
+        message: expect.any(String),
+      },
+    ]);
   });
+
   // - Обновление отдельных полей
   it("Should update existed entity", async () => {
     const createData = GetCreateVideoInputModel({});
@@ -183,12 +175,29 @@ describe("test put methods /videos router", () => {
 
     const data = GetUpdateVideoInputModel({});
 
-    const result = await updateEntity({
+    const { result } = await updateEntity({
       id: createdEntity.id,
-      data,
-      expectedStatus: HTTP_CODES.HTTP_STATUS_BAD_REQUEST,
+      data: data as any,
+      expectedStatus: HTTP_CODES.HTTP_STATUS_NO_CONTENT,
     });
 
-    expect(result.body).toBe(data);
+    expect(result.status).toBe(HTTP_CODES.HTTP_STATUS_NO_CONTENT);
+
+    const { result: getEntityResult } = await getEntity({
+      data: createdEntity.id,
+    });
+    expect(getEntityResult.body).toStrictEqual({
+      id: createdEntity.id,
+      title: data.title,
+      author: data.author,
+      canBeDownloaded: data.canBeDownloaded,
+      minAgeRestriction: data.minAgeRestriction,
+      availableResolutions: data.availableResolutions,
+      createdAt: expect.any(String),
+      publicationDate: expect.any(String),
+    });
+
+    expect(getEntityResult.body.createdAt).toMatch(isoRegex);
+    expect(getEntityResult.body.publicationDate).toMatch(isoRegex);
   });
 });
