@@ -50,7 +50,7 @@ export const getVideoRouter = (db: DbType) => {
     const createVideoInputModel: VideoType = {
       ...data,
       id,
-      canBeDownloaded: true,
+      canBeDownloaded: false,
       minAgeRestriction: null,
       createdAt,
       publicationDate,

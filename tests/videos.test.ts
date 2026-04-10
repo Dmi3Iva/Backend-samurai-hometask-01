@@ -162,7 +162,7 @@ describe("Integration test route /video", () => {
     const { createdEntity } = await createEntity({ data: createData });
 
     expect(createdEntity.title).toBe("Lifecycle Video");
-    expect(createdEntity.canBeDownloaded).toBe(true);
+    expect(createdEntity.canBeDownloaded).toBe(false);
 
     // Update
     const updateData = GetUpdateVideoInputModel({

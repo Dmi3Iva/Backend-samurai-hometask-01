@@ -32,7 +32,7 @@ export const videosTestManager = {
         id: expect.any(Number),
         title: data.title,
         author: data.author,
-        canBeDownloaded: true,
+        canBeDownloaded: false,
         minAgeRestriction: null,
         createdAt: expect.any(String),
         publicationDate: expect.any(String),
