@@ -277,7 +277,7 @@ export const validateUpdateVideoInputModel = (m: unknown): IErrorMessage[] => {
   } else {
     if (typeof m["canBeDownloaded"] !== "boolean") {
       errors.push({
-        field: '"canBeDownloaded"',
+        field: "canBeDownloaded",
         message: `field ${"canBeDownloaded"} should be a boolean`,
       });
     }
