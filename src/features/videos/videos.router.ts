@@ -86,7 +86,7 @@ export const getVideoRouter = (db: DbType) => {
     const idToRemove = Number(req.params.id);
     const videoIndex = db.videos.findIndex((v) => v.id === idToRemove);
     if (videoIndex === -1) {
-      res.sendStatus(HTTP_CODES.HTTP_STATUS_NOT_FOUND);
+      return res.sendStatus(HTTP_CODES.HTTP_STATUS_NOT_FOUND);
     }
     db.videos.splice(idToRemove, 1);
     res.sendStatus(HTTP_CODES.HTTP_STATUS_NO_CONTENT);
