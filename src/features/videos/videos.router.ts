@@ -41,9 +41,9 @@ export const getVideoRouter = (db: DbType) => {
       return res.status(HTTP_CODES.HTTP_STATUS_BAD_REQUEST).json(errorResponse);
     }
 
-    const id = db.videos.length;
-    const createdAt = new Date().toISOString();
     let date = new Date();
+    const id = db.videos.length;
+    const createdAt = date.toISOString();
     date.setDate(date.getDate() + 1);
 
     const publicationDate = date;
