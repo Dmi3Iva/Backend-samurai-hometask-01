@@ -24,7 +24,7 @@ export const getVideoRouter = (db: DbType) => {
   router.get("/:id", (req: RequestWithParams<number>, res) => {
     const video = db.videos.find((v) => v.id === Number(req.params.id));
     if (video === undefined) {
-      res.sendStatus(HTTP_CODES.HTTP_STATUS_NOT_FOUND);
+      return res.sendStatus(HTTP_CODES.HTTP_STATUS_NOT_FOUND);
     }
 
     const videoView = mapVideoDtoToView(video);
